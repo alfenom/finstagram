@@ -32,8 +32,8 @@ post '/signup' do
    end
 end
 
-get '/login' do
-   erb(:login)
+get '/login' do   # when a GET request comes into /login
+   erb(:login)    # render app/views/login.erb
 end
 
 post '/login' do
@@ -59,4 +59,47 @@ end
 get '/' do
    @posts = Post.order(created_at: :desc)
    erb(:index)
+end
+
+get 'posts/new' do
+   erb (:"posts/new")
+end
+
+post '/posts' do
+   photo_url = params[:photo_url]
+   
+   #instantiate a new Post
+   @post = Post.new({ photo_url: photo_url, user_id: current_user.id })
+   
+   #if @post validates, save
+   if @post.save
+      redirect(to('/'))
+   else
+      
+      #if it doesen't validate, print error message
+      @post.errors.full_messages.inspect
+   end
+end
+
+get '/posts/:id' do
+      @post = Post.find(params[:id])
+      erb(:"posts/show")
+      
+   
+end
+   get '/posts/new' do
+      @post = Post.new
+      erb(:"posts/new")
+   end
+
+post '/posts' do
+    photo_url = params[:photo_url]
+    
+    @post = Post.new({ photo_url: photo_url, user_id: current_user.id })
+    
+    if @post.save
+        redirect(to('/'))
+    else
+        erb(:"posts/new")
+    end
 end

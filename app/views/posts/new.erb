@@ -1,8 +1,9 @@
+<h2> New Post</h2>
+
 <ul class="errors">
     <% @post.errors.full_messages.each do |message| %>
     <li><%= message%></li>
     <% end %>
-
 </ul>
 
 <form action="/posts" method="POST"
